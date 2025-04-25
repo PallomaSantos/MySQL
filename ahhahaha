@@ -1,0 +1,6 @@
+SELECT l.titulo, a.nome AS autor, a.nacionalidade, l.preco AS preço_unitario, v.quantidade AS quantidade, YEAR(v.data_venda) AS ano
+FROM vendas v
+JOIN livros l ON v.id = l.id
+JOIN autores a ON l.autor_id = a.id
+WHERE a.nacionalidade = 'Britânica' AND YEAR(v.data_venda) = 2023 AND l.preco > 50 AND v.quantidade >= 2
+ORDER BY l.preco DESC;
