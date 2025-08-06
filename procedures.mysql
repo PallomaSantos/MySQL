@@ -1,0 +1,77 @@
+CREATE DATABASE aula2;
+
+CREATE TABLE clientes(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100),
+    cidade VARCHAR(100)
+);
+
+INSERT INTO clientes(nome, cidade) VALUES 
+('Nicolas o Mala', 'Guarulhos'),
+('Gustavo Perdido', 'Tijulo preto'),
+('Raphaela', 'Cumbica'),
+('Bruno', 'Bom Clima');
+
+DELIMITER //
+
+	CREATE PROCEDURE proc_listar_cidade(
+    IN cidade_param VARCHAR(100)
+    )
+		BEGIN 
+			SELECT * FROM clientes WHERE cidade = cidade_param;
+		END //
+        
+DELIMITER ;
+
+DELIMITER //
+	CREATE PROCEDURE proc_listar_nome(
+    IN nomecliente VARCHAR(100)
+    )
+		BEGIN 
+			SELECT * FROM clientes WHERE nome = nomecliente;
+		END //
+        
+DELIMITER ;
+
+CALL proc_listar_cidade('Guarulhos');
+CALL proc_listar_nome('Bruno');
+
+
+DELIMITER //
+
+	CREATE PROCEDURE PROC_TOTAL_CLIENTES(
+    IN cidade_nome VARCHAR(100),
+    OUT total INT 
+    )
+		BEGIN
+        SELECT count(*) INTO total FROM clientes 
+        WHERE cidade = cidade_nome;
+        END //
+        
+DELIMITER ;
+
+SET @resultado = 0;
+CALL PROC_TOTAL_CLIENTES('Guarulhos', @resultado);
+SELECT @resultado;
+
+DELIMITER // 
+
+	CREATE PROCEDURE PROC_TODOS_CLIENTES(
+    IN nome_cidade VARCHAR(100),
+    OUT nome_resultado VARCHAR(100),
+    OUT cidade_resultado VARCHAR(100)
+    )
+		BEGIN 
+			SELECT nome, cidade
+			INTO nome_resultado, cidade_resultado 
+			FROM clientes; 
+		END //
+        
+	
+        
+DELIMITER ;
+
+
+-- IN (parametro de entrada)
+-- OUT (parametro de saída)
+-- INOUT (parametro de entrada e saída)
